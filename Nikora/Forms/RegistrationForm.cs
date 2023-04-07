@@ -26,21 +26,21 @@ namespace Nikora.Forms
         private void registerButton_Click(object sender, EventArgs e)
         {
             List<Control> texboxes =  new List<Control>();
-            texboxes.Add(registerUserNameTextBox);
+            texboxes.Add(registerUserNamelabel);
             texboxes.Add(registerUserPasswordTextBox);
-            if (!RegistrationFormHelper.Validation(texboxes))
+            if (RegistrationFormHelper.Validation(texboxes))
             {
                 UserModel userModel = new UserModel();
                 userModel.UserName = registerUserNameTextBox.Text;
                 userModel.Password = registerUserPasswordTextBox.Text;
                 try
                 {
-                    NikoraDBContext.UserModels.Add(userModel);
-                    LoginForm loginForm = new LoginForm();
-                    loginForm.ShowDialog();
+                   NikoraDBContext.UserModels.Add(userModel);
+                   NikoraDBContext.SaveChanges();
                     
 
-                }catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }

@@ -65,11 +65,11 @@ namespace Nikora
             List<Control> texboxes = new List<Control>();
             texboxes.Add(userNameTextBox);
             texboxes.Add(passwordTextBox);
-            if (!LoginFormHelper.Validation(texboxes))
+            if (LoginFormHelper.Validation(texboxes))
             {
                 try
                 {
-                    var user = NikoraDBContext.UserModels.Where(x=>x.UserName== userNameTextBox.Text && x.Password== passwordTextBox.Text);
+                    var user = NikoraDBContext.UserModels.Where(x=>x.UserName== userNameTextBox.Text && x.Password== passwordTextBox.Text).FirstOrDefault();
                     if (user != null)
                     {
                         ScalesForm scalesForm = new ScalesForm();

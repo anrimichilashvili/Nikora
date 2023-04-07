@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.registerUserNameTextBox = new System.Windows.Forms.Label();
+            this.registerUserNameTextBox = new System.Windows.Forms.TextBox();
+            this.registerUserNamelabel = new System.Windows.Forms.Label();
             this.registerUserPass = new System.Windows.Forms.Label();
             this.registerUserPasswordTextBox = new System.Windows.Forms.TextBox();
             this.registerButton = new System.Windows.Forms.Button();
@@ -46,25 +46,25 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "რეგისტრაცია";
             // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 118);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(363, 23);
-            this.textBox1.TabIndex = 1;
-            // 
             // registerUserNameTextBox
             // 
             this.registerUserNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.registerUserNameTextBox.AutoSize = true;
-            this.registerUserNameTextBox.Location = new System.Drawing.Point(12, 100);
+            this.registerUserNameTextBox.Location = new System.Drawing.Point(12, 118);
             this.registerUserNameTextBox.Name = "registerUserNameTextBox";
-            this.registerUserNameTextBox.Size = new System.Drawing.Size(88, 15);
-            this.registerUserNameTextBox.TabIndex = 2;
-            this.registerUserNameTextBox.Text = "User UserName";
+            this.registerUserNameTextBox.Size = new System.Drawing.Size(363, 23);
+            this.registerUserNameTextBox.TabIndex = 1;
+            // 
+            // registerUserNamelabel
+            // 
+            this.registerUserNamelabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.registerUserNamelabel.AutoSize = true;
+            this.registerUserNamelabel.Location = new System.Drawing.Point(12, 100);
+            this.registerUserNamelabel.Name = "registerUserNamelabel";
+            this.registerUserNamelabel.Size = new System.Drawing.Size(88, 15);
+            this.registerUserNamelabel.TabIndex = 2;
+            this.registerUserNamelabel.Text = "User UserName";
             // 
             // registerUserPass
             // 
@@ -105,8 +105,8 @@
             this.Controls.Add(this.registerButton);
             this.Controls.Add(this.registerUserPasswordTextBox);
             this.Controls.Add(this.registerUserPass);
+            this.Controls.Add(this.registerUserNamelabel);
             this.Controls.Add(this.registerUserNameTextBox);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Name = "RegistrationForm";
             this.Text = "RegistrationForm";
@@ -118,8 +118,8 @@
         #endregion
 
         private Label label1;
-        private TextBox textBox1;
-        private Label registerUserNameTextBox;
+        private TextBox registerUserNameTextBox;
+        private Label registerUserNamelabel;
         private Label registerUserPass;
         private TextBox registerUserPasswordTextBox;
         private Button registerButton;
