@@ -1,4 +1,5 @@
 ﻿using Apex.Scales.Protocols;
+using Nikora.Core.Models.DataLayer;
 using Nikora.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,28 +16,43 @@ namespace Nikora.Forms
     public partial class ScalesForm : Form
     {
         IAdvancedScale scaleFromType = null;
-        BizerbaES10_TCP_SeriesTransmit bizerbaES10_SeriesTransmit;
+        
         ScalesFormHelper Helper;
+        NikoraDBContext NikoraDBContext;
         public ScalesForm()
         {
             Helper = new ScalesFormHelper();
-            bizerbaES10_SeriesTransmit = new BizerbaES10_TCP_SeriesTransmit()
-            {
-                IP = "192.168.7.161",
-                Port = 1365,
-            };
-            scaleFromType = bizerbaES10_SeriesTransmit;
+            NikoraDBContext = new NikoraDBContext();
+            scaleFromType = null;
             InitializeComponent();
-            sclaesComboBox.Items.Add("BizerbaES10_TCP_SeriesTransmit");
+            
+            var data = (from d in NikoraDBContext.ScaleModels select d);
+            dataGridView1.DataSource = data.ToList();
+            
+
         }
 
         private void displayScaleButton_Click(object sender, EventArgs e)
         {
-            if (sclaesComboBox.Text != String.Empty)
+            if (scaleIPTextBox.Text != String.Empty)
             {
-                if (this.scaleFromType is IWeightInfoSender currentScale2)
-                    currentScale2.StartListener();
-                ((IWeightInfoSender)scaleFromType).NewWeight += ScaleDisplay_NewWeight;
+                switch (scaleNameTextBox.Text)
+                {
+                    case "BizerbaES10_TCP_SeriesTransmit":
+                        BizerbaES10_TCP_SeriesTransmit bizerbaES10_SeriesTransmit = new BizerbaES10_TCP_SeriesTransmit()
+                        {
+                            IP = scaleIPTextBox.Text,
+                            Port = int.Parse(scalePortTextBox.Text),
+                        };
+                        scaleFromType = bizerbaES10_SeriesTransmit;
+                        break;
+                }
+                if (scaleFromType != null)
+                {
+                    if (this.scaleFromType is IWeightInfoSender currentScale2)
+                        currentScale2.StartListener();
+                    ((IWeightInfoSender)scaleFromType).NewWeight += ScaleDisplay_NewWeight;
+                }
             }
             else
             {
@@ -57,7 +73,9 @@ namespace Nikora.Forms
 
         private void removeDisplay_Click(object sender, EventArgs e)
         {
-            
+            dataGridView1.DisplayedColumnCount(true);
+            dataGridView1.DisplayedRowCount(true);
+            dataGridView1.AutoResizeColumns();
             if (this.scaleFromType is IWeightInfoSender currentScale2)
             {
                 Helper.ClearControls(this.Controls);
@@ -66,14 +84,41 @@ namespace Nikora.Forms
             }
         }
 
-        private void sclaesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void addButton_Click(object sender, EventArgs e)
         {
-            scaleIPTextBox.Text = scaleFromType.IP;
-            scalePortTextBox.Text = scaleFromType.Port.ToString();
-            scaleNameTextBox.Text = sclaesComboBox.Text;
+            List<Control> textboxList = new List<Control>();
+            textboxList.Add(scaleIPTextBox);
+            textboxList.Add(scalePortTextBox);
+            textboxList.Add(scaleNameTextBox);
+            if (Helper.Validation(textboxList))
+            {
+                NikoraDBContext.ScaleModels.Add(new ScaleModel
+                {
+                    ScaleIP = scaleIPTextBox.Text,
+                    ScalePort = scalePortTextBox.Text,
+                    ScaleName = scaleNameTextBox.Text,
+                });
+                NikoraDBContext.SaveChanges();
+            }
         }
 
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = dataGridView1.SelectedRows[0];
 
-        
+                string scaleName = row.Cells["ScaleName"].Value.ToString();
+                var scale = NikoraDBContext.ScaleModels.Where(x => x.ScaleName == scaleName).FirstOrDefault();
+                if (scale != null)
+                {
+                    scaleIPTextBox.Text = scale.ScaleIP;
+                    scalePortTextBox.Text = scale.ScalePort;
+                    scaleNameTextBox.Text = scale.ScaleName;
+                }
+            }
+            
+
+        }
     }
 }

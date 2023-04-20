@@ -33,6 +33,19 @@ namespace Nikora.Helpers
             }
         }
 
+        public bool Validation(List<Control> objectList)
+        {
+            foreach (var objectOfList in objectList)
+            {
+                if (objectOfList is TextBoxBase && objectOfList.Text == String.Empty)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
     }
 
 }
